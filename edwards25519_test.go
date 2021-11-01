@@ -66,7 +66,7 @@ func TestAddSubNegOnBasePoint(t *testing.T) {
 	checkLhs, checkRhs := &Point{}, &Point{}
 
 	checkLhs.Add(B, B)
-	tmpP2 := new(projP2).FromP3(B)
+	tmpP2 := new(ProjP2).FromP3(B)
 	tmpP1xP1 := new(projP1xP1).Double(tmpP2)
 	checkRhs.fromP1xP1(tmpP1xP1)
 	if checkLhs.Equal(checkRhs) != 1 {

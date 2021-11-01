@@ -16,7 +16,7 @@ type projP1xP1 struct {
 	X, Y, Z, T field.Element
 }
 
-type projP2 struct {
+type ProjP2 struct {
 	X, Y, Z field.Element
 }
 
@@ -56,7 +56,7 @@ type affineCached struct {
 
 // Constructors.
 
-func (v *projP2) Zero() *projP2 {
+func (v *ProjP2) Zero() *ProjP2 {
 	v.X.Zero()
 	v.Y.One()
 	v.Z.One()
@@ -194,14 +194,14 @@ func copyFieldElement(buf *[32]byte, v *field.Element) []byte {
 
 // Conversions.
 
-func (v *projP2) FromP1xP1(p *projP1xP1) *projP2 {
+func (v *ProjP2) FromP1xP1(p *projP1xP1) *ProjP2 {
 	v.X.Multiply(&p.X, &p.T)
 	v.Y.Multiply(&p.Y, &p.Z)
 	v.Z.Multiply(&p.Z, &p.T)
 	return v
 }
 
-func (v *projP2) FromP3(p *Point) *projP2 {
+func (v *ProjP2) FromP3(p *Point) *ProjP2 {
 	v.X.Set(&p.x)
 	v.Y.Set(&p.y)
 	v.Z.Set(&p.z)
@@ -216,7 +216,7 @@ func (v *Point) fromP1xP1(p *projP1xP1) *Point {
 	return v
 }
 
-func (v *Point) fromP2(p *projP2) *Point {
+func (v *Point) FromP2(p *ProjP2) *Point {
 	v.x.Multiply(&p.X, &p.Z)
 	v.y.Multiply(&p.Y, &p.Z)
 	v.z.Square(&p.Z)
@@ -351,7 +351,7 @@ func (v *projP1xP1) SubAffine(p *Point, q *affineCached) *projP1xP1 {
 
 // Doubling.
 
-func (v *projP1xP1) Double(p *projP2) *projP1xP1 {
+func (v *projP1xP1) Double(p *ProjP2) *projP1xP1 {
 	var XX, YY, ZZ2, XplusYsq field.Element
 
 	XX.Square(&p.X)

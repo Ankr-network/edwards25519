@@ -109,7 +109,7 @@ func (v *Point) bytesMontgomery(buf *[32]byte) []byte {
 func (v *Point) MultByCofactor(p *Point) *Point {
 	checkInitialized(p)
 	result := projP1xP1{}
-	pp := (&projP2{}).FromP3(p)
+	pp := (&ProjP2{}).FromP3(p)
 	result.Double(pp)
 	pp.FromP1xP1(&result)
 	result.Double(pp)
@@ -257,7 +257,7 @@ func (v *Point) MultiScalarMult(scalars []*Scalar, points []*Point) *Point {
 	// Unwrap first loop iteration to save computing 16*identity
 	multiple := &projCached{}
 	tmp1 := &projP1xP1{}
-	tmp2 := &projP2{}
+	tmp2 := &ProjP2{}
 	// Lookup-and-add the appropriate multiple of each input point
 	for j := range tables {
 		tables[j].SelectInto(multiple, digits[j][63])
@@ -311,7 +311,7 @@ func (v *Point) VarTimeMultiScalarMult(scalars []*Scalar, points []*Point) *Poin
 
 	multiple := &projCached{}
 	tmp1 := &projP1xP1{}
-	tmp2 := &projP2{}
+	tmp2 := &ProjP2{}
 	tmp2.Zero()
 
 	// Move from high to low bits, doubling the accumulator
@@ -338,6 +338,6 @@ func (v *Point) VarTimeMultiScalarMult(scalars []*Scalar, points []*Point) *Poin
 		tmp2.FromP1xP1(tmp1)
 	}
 
-	v.fromP2(tmp2)
+	v.FromP2(tmp2)
 	return v
 }

@@ -48,7 +48,7 @@ func (v *Point) ScalarBaseMult(x *Scalar) *Point {
 
 	multiple := &affineCached{}
 	tmp1 := &projP1xP1{}
-	tmp2 := &projP2{}
+	tmp2 := &ProjP2{}
 
 	// Accumulate the odd components first
 	v.Set(NewIdentityPoint())
@@ -100,7 +100,7 @@ func (v *Point) ScalarMult(x *Scalar, q *Point) *Point {
 	// Unwrap first loop iteration to save computing 16*identity
 	multiple := &projCached{}
 	tmp1 := &projP1xP1{}
-	tmp2 := &projP2{}
+	tmp2 := &ProjP2{}
 	table.SelectInto(multiple, digits[63])
 
 	v.Set(NewIdentityPoint())
@@ -176,7 +176,7 @@ func (v *Point) VarTimeDoubleScalarBaseMult(a *Scalar, A *Point, b *Scalar) *Poi
 	multA := &projCached{}
 	multB := &affineCached{}
 	tmp1 := &projP1xP1{}
-	tmp2 := &projP2{}
+	tmp2 := &ProjP2{}
 	tmp2.Zero()
 
 	// Move from high to low bits, doubling the accumulator
@@ -209,6 +209,6 @@ func (v *Point) VarTimeDoubleScalarBaseMult(a *Scalar, A *Point, b *Scalar) *Poi
 		tmp2.FromP1xP1(tmp1)
 	}
 
-	v.fromP2(tmp2)
+	v.FromP2(tmp2)
 	return v
 }
